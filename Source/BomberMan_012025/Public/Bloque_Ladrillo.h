@@ -1,45 +1,51 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Bloque.generated.h"
+#include "Bloque_Ladrillo.generated.h"
 
+// Declaración de clases necesarias
 class UStaticMeshComponent;
 class UMaterialInterface;
+
 UCLASS()
-class BOMBERMAN_012025_API ABloque : public AActor
+class BOMBERMAN_012025_API ABloque_Ladrillo : public AActor
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
 public:
-	// Sets default values for this actor's properties
-	ABloque();
+    // Constructor predeterminado
+    ABloque_Ladrillo();
 
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+    // Llamado al inicio del juego
+    virtual void BeginPlay() override;
 
 public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-public:
-	//malla del bloque
-	UPROPERTY()
-	UStaticMeshComponent* MeshBloque;
-	// Es * eso es punturo
-	UMaterialInterface* BloqueMaterial;
+    // Llamado cada cuadro
+    virtual void Tick(float DeltaTime) override;
 
-	UFUNCTION(BlueprintCallable)
-	void AjustarTamano(FVector NuevoTamano);
-	float FloatSpeed;
-	float RotationSpeed;
-	bool bPuedeMoverse;
+    // Ajustar tamaño del bloque
+    UFUNCTION(BlueprintCallable, Category = "Bloque")
+    void AjustarTamanoAcero(FVector NuevoTamano);
+
+    // Componente de malla del bloque
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Bloque")
+    UStaticMeshComponent* MeshBloque_Ladrillo;
+
+    // Material del bloque
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Material")
+    UMaterialInterface* BloqueMaterial;
+
+    // Velocidad del movimiento vertical
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movimiento")
+    float velocidad;
+
+    // Amplitud del movimiento (distancia máxima de desplazamiento)
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movimiento")
+    float amplitud;
 
 private:
-	FVector PosicionInicial;
-	float AmplitudMovimiento = 100.0f; // Distancia máxima de movimiento
-	float DireccionMovimiento = 1.0f; // 1 = hacia arriba, -1 = hacia abajo
-
+    // Posición inicial del objeto en el eje Z
+    float PosicionInicial;
 };

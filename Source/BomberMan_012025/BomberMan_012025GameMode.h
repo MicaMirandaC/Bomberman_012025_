@@ -17,7 +17,7 @@ public:
 public:
 	virtual void BeginPlay() override;
 };
-//lab 02
+
 
 
 

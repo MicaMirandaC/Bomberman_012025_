@@ -3,56 +3,24 @@
 #include "BomberMan_012025GameMode.h"
 #include "BomberMan_012025Character.h"
 #include "UObject/ConstructorHelpers.h"
-#include "Bloque.h"
 #include "GameFramework/Character.h"
 #include "Engine/Engine.h"
+#include "Muro.h"
+#include "Bloque.h"
 #include "Bloque_Ladrillo.h"
+
+
 
 ABomberMan_012025GameMode::ABomberMan_012025GameMode()
 {
-	// set default pawn class to our Blueprinted character
-	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/ThirdPerson/Blueprints/BP_ThirdPersonCharacter"));
-	if (PlayerPawnBPClass.Class != NULL)
-	{
-		DefaultPawnClass = PlayerPawnBPClass.Class;
-	}
+    // set default pawn class to our Blueprinted character
+    static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/ThirdPerson/Blueprints/BP_ThirdPersonCharacter"));
+    if (PlayerPawnBPClass.Class != NULL)
+    {
+        DefaultPawnClass = PlayerPawnBPClass.Class;
+    }
 }
 
-void ABomberMan_012025GameMode::BeginPlay()
-{
-	Super::BeginPlay();
-
-	GEngine->AddOnScreenDebugMessage(-1, -1, FColor::Red, TEXT("Bloque Spawning"));
-
-	// Create a new Enemigo
-	//ABloque* bloque01 = GetWorld()->SpawnActor<ABloque>(ABloque::StaticClass(), FVector(934.0f, 1370.0f, 100.0f), FRotator(0.0f, 0.0f, 0.0f));
-	//ABloque* bloque02 = GetWorld()->SpawnActor<ABloque>(ABloque::StaticClass(), FVector(734.0f, 1370.0f, 50.0f), FRotator(0.0f, 0.0f, 0.0f));
-
-	/*int numeroBloqueConMovimiento = 0;
-
-	for (int i = 0; i < 20; i++)
-	{
-
-		ABloque* bloque = GetWorld()->SpawnActor<ABloque>(ABloque::StaticClass(), FVector(500.0f + i * 100, 2500.0f - i * 100, 20.0f), FRotator(0.0f, 0.0f, 0.0f));
-
-
-		if (bloque->bPuedeMoverse)
-		{
-			numeroBloqueConMovimiento++;
-		}
-
-		if (numeroBloqueConMovimiento >= 7)
-		{
-			bloque->bPuedeMoverse = false;
-		}
-
-	}
-
-}
-*/
-// lab 02
-
-/*
 void ABomberMan_012025GameMode::BeginPlay()
 {
     Super::BeginPlay();
@@ -112,9 +80,8 @@ void ABomberMan_012025GameMode::BeginPlay()
         MurosArray[0]->bPuedeGirar = true;
         MurosArray[1]->bPuedeGirar = true;
     }
-    */
 
-    //PARA EL BLOQUE
+    /*
     int numeroBloqueConMovimiento = 0;
     const int filas = 5; // Número de filas
     const int columnas = 5; // Número de columnas
@@ -141,7 +108,6 @@ void ABomberMan_012025GameMode::BeginPlay()
         }
     }
 
-    /*
     //PARA MURO
     const int filasM = 3; // Número de filas
     const int columnasM = 3; // Número de columnas
@@ -189,16 +155,13 @@ void ABomberMan_012025GameMode::BeginPlay()
 
     */
 
-    //PARA BLOQUE DE LADRILLO
+    //PARA BLOQUE DE Ladrillo
 
-  /*  float espacioBA = 500.0f;
+    float espacioBA = 500.0f;
 
-    for (int i = 0; i < 2; i++)
+    for (int i = 0; i < 5; i++)
     {
-        FVector posicionAcero(700.0f + i * espacioBA, 1680.0f, 5.0f);
+        FVector posicionAcero(500.0f + i * espacioBA, 1500.0f, 3.0f);
         ABloque_Ladrillo* Bloque_Ladrillo1 = GetWorld()->SpawnActor<ABloque_Ladrillo>(ABloque_Ladrillo::StaticClass(), posicionAcero, FRotator::ZeroRotator);
     }
-
-
 }
-*/

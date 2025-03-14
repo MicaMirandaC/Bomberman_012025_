@@ -3,6 +3,8 @@
 
 #include "Bloque.h"
 #include "Components/StaticMeshComponent.h"
+#include "Materials/MaterialInterface.h"
+
 
 // Sets default values
 ABloque::ABloque()
@@ -10,23 +12,31 @@ ABloque::ABloque()
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	MallaBloque = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MallaBloque"));
-	//RootComponent = MeshComp;
-	MallaBloque->SetupAttachment(RootComponent);
+	MeshBloque = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshBloque"));
+	MeshBloque->SetupAttachment(RootComponent);
 
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> ObjetoMallaBloque(TEXT("/Script/Engine.StaticMesh'/Game/StarterContent/Shapes/Shape_Cube.Shape_Cube'"));
-
-	if (ObjetoMallaBloque.Succeeded())
+	//static  solo pude existir una sola vez en una clase, se define un objeto estatico
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> ObjetoMeshBloque(TEXT("/Script/Engine.StaticMesh'/Game/StarterContent/Shapes/Shape_WideCapsule.Shape_WideCapsule'"));
+	if (ObjetoMeshBloque.Succeeded())
 	{
-		MallaBloque->SetStaticMesh(ObjetoMallaBloque.Object);
+		MeshBloque->SetStaticMesh(ObjetoMeshBloque.Object);
 
-		MallaBloque->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
+		MeshBloque->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
+	}
+	//para asignar textura al bloque
+	static ConstructorHelpers::FObjectFinder<UMaterialInterface> ObjetoBloqueMaterial(TEXT("/Script/Engine.Material'/Game/StarterContent/Materials/M_Tech_Panel.M_Tech_Panel'"));
+	if (ObjetoBloqueMaterial.Succeeded())
+	{
+		MeshBloque->SetMaterial(0, ObjetoBloqueMaterial.Object);
+
 	}
 
 	FloatSpeed = 5.0f;
 	RotationSpeed = 3.0f;
 
 	bPuedeMoverse = FMath::RandBool();
+	// Establecer el tamaño inicial del bloque
+	AjustarTamano(FVector(2.5f, 2.5f, 2.5f)); // Tamaño por defecto
 }
 
 // Called when the game starts or when spawned
@@ -40,20 +50,23 @@ void ABloque::BeginPlay()
 void ABloque::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+
 	if (bPuedeMoverse)
 	{
 		FVector NewLocation = GetActorLocation();
-		FRotator NewRotation = GetActorRotation();
-		float RunningTime = GetGameTimeSinceCreation();
+		NewLocation.Z += DireccionMovimiento * FloatSpeed;
 
-		// Aleatoriedad en el desplazamiento en Z
-		float DeltaHeight = FMath::FRandRange(-1.0f, 1.0f) * FloatSpeed;
-		NewLocation.Z += DeltaHeight;
+		if (FMath::Abs(NewLocation.Z - PosicionInicial.Z) >= AmplitudMovimiento)
+		{
+			DireccionMovimiento *= -1; // Invertir dirección al alcanzar el límite
+		}
 
-		// Aleatoriedad en la rotación
-		float DeltaRotation = FMath::FRandRange(-1.0f, 1.0f) * RotationSpeed;
-		NewRotation.Yaw += DeltaRotation;
-
-		SetActorLocationAndRotation(NewLocation, NewRotation);
+		SetActorLocation(NewLocation);
 	}
+}
+
+void ABloque::AjustarTamano(FVector NuevoTamano)
+{
+	MeshBloque->SetWorldScale3D(NuevoTamano);
 }
