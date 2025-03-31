@@ -5,11 +5,12 @@
 #include "UObject/ConstructorHelpers.h"
 #include "GameFramework/Character.h"
 #include "Engine/Engine.h"
-#include "Muro.h"
 #include "Bloque.h"
-#include "Bloque_Ladrillo.h"
-
-
+#include "Muro.h"
+#include "BloqueAcero.h"
+#include "BloqueMadera.h"
+#include "BloqueLadrillo.h"
+#include "BloqueConcreto.h"
 
 ABomberMan_012025GameMode::ABomberMan_012025GameMode()
 {
@@ -29,9 +30,9 @@ void ABomberMan_012025GameMode::BeginPlay()
     //PARA BLOQUE Y MURO INTERCALADOS
     GEngine->AddOnScreenDebugMessage(-1, -1, FColor::Red, TEXT("Generando bloques y muros intercalados"));
 
-    const int totalBloques = 5; // Número total de bloques
-    const int totalMuros = 5;   // Número total de muros
-    const float espacio = 500.0f; // Espacio entre elementos
+    const int totalBloques = 6; // Número total de bloques
+    const int totalMuros = 6;   // Número total de muros
+    const float espacio = 600.0f; // Espacio entre elementos
 
     TArray<ABloque*> BloquesArray;
     TArray<AMuro*> MurosArray;
@@ -42,9 +43,9 @@ void ABomberMan_012025GameMode::BeginPlay()
 
     for (int i = 0; i < 2; i++)
     {
-        for (int j = 0; j < 5; j++)
+        for (int j = 0; j < 6; j++)
         {
-            FVector posicion(570.0f + j * espacio, 3000.0f - i * espacio, 5.0f);
+            FVector posicion(900.0f + j * espacio, 6000.0f - i * espacio, 5.0f);
             if ((i + j) % 2 == 0 && bloqueCount < totalBloques)
             {
                 ABloque* Bloque = GetWorld()->SpawnActor<ABloque>(ABloque::StaticClass(), posicion, FRotator(0.0f, 0.0f, 0.0f));
@@ -72,6 +73,7 @@ void ABomberMan_012025GameMode::BeginPlay()
     {
         BloquesArray[0]->bPuedeMoverse = true;
         BloquesArray[1]->bPuedeMoverse = true;
+        BloquesArray[2]->bPuedeMoverse = true;
     }
 
     // Asignar dos muros para girar
@@ -124,44 +126,75 @@ void ABomberMan_012025GameMode::BeginPlay()
     }
 
 
+
+
+    //PARA BLOQUE DE ACERO
+
+    float espacioBA = 500.0f;
+
+    for (int i = 0; i < 2; i++)
+    {
+        FVector posicionAcero(700.0f + i * espacioBA, 1680.0f, 5.0f);
+        ABloqueAcero* BloqueAcero1 = GetWorld()->SpawnActor<ABloqueAcero>(ABloqueAcero::StaticClass(), posicionAcero, FRotator::ZeroRotator);
+    }
+    //PARA BLOQUE MADERA
+    float espacioBMA = 500.0f;
+    for (int i = 0 ; i < 2; i++)
+    {
+        FVector posicionMadera(2260.0f + i * espacioBMA, 400.0f, 5.0f);
+        ABloqueMadera* BloqueMadera1 = GetWorld()->SpawnActor<ABloqueMadera>(ABloqueMadera::StaticClass(), posicionMadera, FRotator::ZeroRotator);
+        if (BloqueMadera1)
+        {
+            BloqueMadera1->bAbriendo = true;
+        }
+    }
     */
 
+    // Espacio entre bloques
+    float espacioMBA = 600.0f;
 
-    //Para generar bloques y muros intercalados
-    /*
-     for (int i = 0; i < filas; i++)
+    // Generar bloques de acero en una cuadrícula 2x2
+    for (int i = 0; i < 2; i++)
     {
-        for (int j = 0; j < columnas; j++)
+        for (int j = 0; j < 3; j++)
         {
-            // Calcular la posición de cada bloque o muro
-            FVector posicion(570.0f + j * espacio, 3000.0f - i * espacio, 5.0f);
+            FVector posicionAcero(700.0f + j * espacioMBA, 4000.0f + i * espacioMBA, 5.0f);
+            ABloqueAcero* BloqueAcero1 = GetWorld()->SpawnActor<ABloqueAcero>(ABloqueAcero::StaticClass(), posicionAcero, FRotator::ZeroRotator);
+        }
+    }
 
-            // Alternar entre bloque y muro
-            if ((i + j) % 2 == 0) // Si la suma de i y j es par, crea un bloque
+    // Generar bloques de madera en una cuadrícula 2x2
+    for (int i = 0; i < 2; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            FVector posicionMadera(2500.0f + j * espacioMBA, 4000.0f + i * espacioMBA, 5.0f);
+            ABloqueMadera* BloqueMadera1 = GetWorld()->SpawnActor<ABloqueMadera>(ABloqueMadera::StaticClass(), posicionMadera, FRotator::ZeroRotator);
+            if (BloqueMadera1)
             {
-                ABloque* Bloque = GetWorld()->SpawnActor<ABloque>(ABloque::StaticClass(), posicion, FRotator(0.0f, 0.0f, 0.0f));
-
-                if (Bloque->bPuedeMoverse)
-                {
-                    // Aquí puedes agregar lógica adicional si es necesario
-                }
-            }
-            else // Si la suma de i y j es impar, crea un muro
-            {
-                AMuro* Muro = GetWorld()->SpawnActor<AMuro>(AMuro::StaticClass(), posicion, FRotator(0.0f, 0.0f, 0.0f));
+                BloqueMadera1->bAbriendo = true; // Iniciar el movimiento del bloque de madera
             }
         }
     }
 
-    */
-
-    //PARA BLOQUE DE Ladrillo
-
-    float espacioBA = 500.0f;
-
-    for (int i = 0; i < 5; i++)
+    // Generar bloques de ladrillo en una cuadrícula 2x2
+    for (int i = 0; i < 2; i++)
     {
-        FVector posicionAcero(500.0f + i * espacioBA, 1500.0f, 3.0f);
-        ABloque_Ladrillo* Bloque_Ladrillo1 = GetWorld()->SpawnActor<ABloque_Ladrillo>(ABloque_Ladrillo::StaticClass(), posicionAcero, FRotator::ZeroRotator);
+        for (int j = 0; j < 3; j++)
+        {
+            FVector posicionLadrillo(2500.0f + j * espacioMBA, 2000.0f + i * espacioMBA, 10.0f);
+            ABloqueLadrillo* BloqueLadrillo1 = GetWorld()->SpawnActor<ABloqueLadrillo>(ABloqueLadrillo::StaticClass(), posicionLadrillo, FRotator::ZeroRotator);
+        }
     }
+
+    //PARA BLOQUES CONCRETOS 2 x2 
+    for (int i = 0; i < 2; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            FVector posicionConcreto(700.0f + j * espacioMBA, 2000.0f + i * espacioMBA, 10.0f);
+            ABloqueConcreto* BloqueConcreto1 = GetWorld()->SpawnActor<ABloqueConcreto>(ABloqueConcreto::StaticClass(), posicionConcreto, FRotator::ZeroRotator);
+        }
+    }
+
 }

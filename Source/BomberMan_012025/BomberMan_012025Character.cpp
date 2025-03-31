@@ -13,14 +13,11 @@
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
-//////////////////////////////////////////////////////////////////////////
-// ABomberMan_012025Character
-
 ABomberMan_012025Character::ABomberMan_012025Character()
 {
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
-		
+
 	// Don't rotate when the controller rotates. Let that just affect the camera.
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
@@ -54,28 +51,29 @@ ABomberMan_012025Character::ABomberMan_012025Character()
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
 }
 
+void ABomberMan_012025Character::BeginPlay()
+{
+	// Call the base class  
+	Super::BeginPlay();
+}
+
 //////////////////////////////////////////////////////////////////////////
 // Input
 
-void ABomberMan_012025Character::NotifyControllerChanged()
+void ABomberMan_012025Character::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
-	Super::NotifyControllerChanged();
-
 	// Add Input Mapping Context
-	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
 		}
 	}
-}
 
-void ABomberMan_012025Character::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
 	// Set up action bindings
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent)) {
-		
+
 		// Jumping
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
@@ -105,7 +103,7 @@ void ABomberMan_012025Character::Move(const FInputActionValue& Value)
 
 		// get forward vector
 		const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-	
+
 		// get right vector 
 		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
@@ -127,3 +125,4 @@ void ABomberMan_012025Character::Look(const FInputActionValue& Value)
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
 }
+

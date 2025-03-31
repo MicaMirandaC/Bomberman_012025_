@@ -27,7 +27,7 @@ class ABomberMan_012025Character : public ACharacter
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* FollowCamera;
-	
+
 	/** MappingContext */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputMappingContext* DefaultMappingContext;
@@ -46,7 +46,7 @@ class ABomberMan_012025Character : public ACharacter
 
 public:
 	ABomberMan_012025Character();
-	
+
 
 protected:
 
@@ -55,13 +55,14 @@ protected:
 
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
-			
+
 
 protected:
-
-	virtual void NotifyControllerChanged() override;
-
+	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	// To add mapping context
+	virtual void BeginPlay();
 
 public:
 	/** Returns CameraBoom subobject **/
@@ -69,4 +70,3 @@ public:
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 };
-

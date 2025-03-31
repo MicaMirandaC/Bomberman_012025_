@@ -4,18 +4,19 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Bloque.generated.h"
+#include "BloqueLadrillo.generated.h"
 
 class UStaticMeshComponent;
 
+
 UCLASS()
-class BOMBERMAN_012025_API ABloque : public AActor
+class BOMBERMAN_012025_API ABloqueLadrillo : public AActor
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this actor's properties
-	ABloque();
+	ABloqueLadrillo();
 
 protected:
 	// Called when the game starts or when spawned
@@ -24,23 +25,20 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-public:
-	//malla del bloque
-	UPROPERTY()
-	UStaticMeshComponent* MeshBloque;
 
-	float FloatSpeed;
-	float RotationSpeed;
-	bool bPuedeMoverse;
+public:
+	UPROPERTY(VisibleAnywhere)
+	UStaticMeshComponent* MeshBloqueLadrillo;
 
 	UFUNCTION(BlueprintCallable)
+	void AjustarTamanoAcero(FVector NuevoTamano);
 
-	void AjustarTamano(FVector NuevoTamano);
+	float velocidad;
+	float amplitud;
+	//float PosicionInicial;
 
 private:
-
-	FVector PosicionInicial;
-	float AmplitudMovimiento = 100.0f; // Distancia máxima de movimiento
-	float DireccionMovimiento = 1.0f; // 1 = hacia arriba, -1 = hacia abajo
+	// Posición inicial del objeto en el eje Z
+	float PosicionInicial;
 
 };
